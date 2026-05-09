@@ -1,253 +1,133 @@
-# SCAME Selection Tool - Technology Stack
+# Technology Stack
 
-## Overview
-SCAME智能选型工具是北京韶聪泽明智能科技有限责任公司的核心产品，为企业提供精准、高效的SCAME工业插头插座选型解决方案。基于深度学习的SCAME产品知识图谱和RAG（检索增强生成）技术，实现技术参数驱动的智能选型。
+**Analysis Date:** 2026-04-16
 
-## Core Technologies
+## Languages
 
-### Programming Languages
-- **TypeScript 5.3.3**: Primary language for type-safe development
-- **JavaScript (ES2022+)**: Runtime language with modern features
+**Primary:**
+- TypeScript 5.3.3 - 全栈开发，严格类型检查
+- JavaScript (ES2022+) - 构建产物和浏览器运行
 
-### Frontend Framework
-- **React 18.2.0**: UI library with concurrent features
-- **React DOM 18.2.0**: React renderer for web
+**Secondary:**
+- CSS with Tailwind - 样式系统
+- JSX/TSX - React组件模板
 
-### Build System & Tooling
-- **Vite 5.0.8**: Next-generation frontend build tool
-- **TypeScript Compiler**: For type checking and transpilation
-- **ESBuild**: Underlying bundler used by Vite
+## Runtime
 
-### Styling & UI
-- **Tailwind CSS 3.3.6**: Utility-first CSS framework
-- **PostCSS 8.4.32**: CSS transformation tool
-- **Autoprefixer 10.4.16**: Vendor prefix automation
-- **Tailwind Merge 2.2.0**: Utility for merging Tailwind classes
-- **Clsx 2.0.0**: Utility for constructing className strings conditionally
+**Environment:**
+- Node.js >=18.0.0
+- 浏览器环境：现代浏览器（支持ES2022+）
 
-### State Management & Data Flow
-- **Zustand 4.4.7**: Lightweight state management
-- **React Query (@tanstack/react-query) 5.18.0**: Server state management and data fetching
-- **Axios 1.6.7**: HTTP client for API requests
+**Package Manager:**
+- pnpm >=8.0.0 (推荐)
+- npm 兼容（package-lock.json存在）
+- Lockfile: `package-lock.json` 存在
 
-### Form Handling & Validation
-- **React Hook Form 7.48.2**: Performant form library
-- **Zod 3.22.4**: TypeScript-first schema validation
-- **@hookform/resolvers 3.3.2**: Zod integration for React Hook Form
+## Frameworks
 
-### Routing
-- **React Router DOM 6.20.1**: Client-side routing
+**Core:**
+- React 18.2.0 - UI框架
+- Vite 5.0.8 - 构建工具和开发服务器
+- TypeScript 5.3.3 - 类型系统和编译
 
-### UI Components & Icons
-- **Lucide React 1.8.0**: Icon library
-- **Custom SCAME Design System**: Brand-specific colors and components
+**状态管理:**
+- Zustand 4.4.7 - 轻量级状态管理
+- React Query 5.18.0 - 服务器状态管理
 
-## Development Tools
+**路由:**
+- React Router DOM 6.20.1 - 客户端路由
 
-### Package Management
-- **pnpm 8.0.0+**: Fast, disk space efficient package manager
-- **Node.js 18.0.0+**: JavaScript runtime
+**表单处理:**
+- React Hook Form 7.48.2 - 表单管理
+- Zod 3.22.4 - 表单验证模式
 
-### Code Quality & Formatting
-- **ESLint 8.56.0**: JavaScript/TypeScript linting
-- **@typescript-eslint/eslint-plugin 6.15.0**: TypeScript-specific ESLint rules
-- **@typescript-eslint/parser 6.15.0**: ESLint parser for TypeScript
-- **eslint-plugin-react-hooks 4.6.0**: ESLint plugin for React Hooks
-- **eslint-plugin-react-refresh 0.4.5**: ESLint plugin for React Refresh
-- **Prettier 3.1.1**: Code formatter
+**样式系统:**
+- Tailwind CSS 3.3.6 - 实用优先CSS框架
+- Tailwind Merge 2.2.0 - 类名合并工具
+- PostCSS 8.4.32 - CSS处理
+- Autoprefixer 10.4.16 - 浏览器前缀
 
-### Testing
-- **Vitest 1.1.0**: Unit testing framework
-- **@testing-library/react 14.1.2**: React component testing utilities
-- **@testing-library/jest-dom 6.1.5**: Custom Jest matchers for DOM testing
-- **@testing-library/user-event 14.5.1**: Simulate user events
-- **Playwright 1.40.1**: End-to-end testing framework
-- **jsdom 23.0.1**: Simulated browser environment for testing
+**图标库:**
+- Lucide React 1.8.0 - 图标组件
 
-### Type Definitions
-- **@types/react 18.2.43**: TypeScript definitions for React
-- **@types/react-dom 18.2.17**: TypeScript definitions for React DOM
-- **@types/node 25.6.0**: TypeScript definitions for Node.js
+**工具类:**
+- clsx 2.0.0 - 条件类名组合
+- @hookform/resolvers 3.3.2 - 表单验证解析器
 
-### Development Server & Build Configuration
-- **@vitejs/plugin-react 4.2.1**: Vite plugin for React
-- **Custom Vite Configuration**: Includes path aliases, server settings, and build optimizations
+## 测试框架
 
-## Project Structure & Configuration
+**单元测试:**
+- Vitest 1.1.0 - 测试运行器
+- React Testing Library 14.1.2 - React组件测试
+- Jest DOM 6.1.5 - DOM断言扩展
+- User Event 14.5.1 - 用户交互模拟
+- JSDOM 23.0.1 - DOM环境模拟
 
-### Configuration Files
-- **package.json**: Dependencies, scripts, and project metadata
-- **tsconfig.json**: TypeScript compiler configuration with strict settings
-- **tsconfig.node.json**: TypeScript configuration for Node.js/Vite
-- **vite.config.ts**: Vite build configuration with React plugin and path aliases
-- **tailwind.config.js**: Tailwind CSS configuration with SCAME brand colors
-- **postcss.config.js**: PostCSS configuration with autoprefixer
-- **.eslintrc.cjs**: ESLint configuration with TypeScript and React rules
-- **.prettierrc.json**: Prettier formatting configuration
+**E2E测试:**
+- Playwright 1.40.1 - 端到端测试
 
-### Project Architecture
-```
-scame-selection-tool/
-├── src/
-│   ├── app/                    # Application entry points
-│   ├── components/             # React components
-│   │   ├── layout/            # Layout components (Header, Footer, Sidebar)
-│   │   ├── product/           # Product display components
-│   │   ├── rag/               # RAG system components
-│   │   └── selection/         # Selection-specific components
-│   ├── lib/                   # Utility libraries
-│   │   ├── scame/            # SCAME-specific business logic
-│   │   │   ├── coding.ts     # Part number encoding/decoding
-│   │   │   └── matching.ts   # Product matching algorithms
-│   │   └── rag/              # RAG system implementation
-│   │       ├── ScameRAGService.ts
-│   │       ├── VectorStore.ts
-│   │       ├── DocumentProcessor.ts
-│   │       └── index.ts
-│   ├── hooks/                 # Custom React hooks
-│   ├── pages/                 # Page components
-│   │   ├── HomePage.tsx
-│   │   ├── ForwardSelectionPage.tsx
-│   │   ├── ReverseSelectionPage.tsx
-│   │   ├── ProductsPage.tsx
-│   │   ├── KnowledgePage.tsx
-│   │   ├── DocumentManagementPage.tsx
-│   │   ├── SettingsPage.tsx
-│   │   ├── HelpPage.tsx
-│   │   ├── ProductDetailPage.tsx
-│   │   ├── QuickSelectPage.tsx
-│   │   └── NotFoundPage.tsx
-│   ├── routes/                # Routing configuration
-│   │   └── Router.tsx
-│   ├── stores/                # Zustand state stores
-│   ├── types/                 # TypeScript type definitions
-│   └── test/                  # Test setup files
-│       └── setup.ts
-├── docs/                      # Project documentation
-├── tests/                     # Test files
-├── scripts/                   # Build and deployment scripts
-├── data/                      # Data files (not committed to Git)
-└── public/                    # Static assets
-```
+## 开发工具
 
-## Development Workflow
+**代码质量:**
+- ESLint 8.56.0 - 代码检查
+- Prettier 3.1.1 - 代码格式化
+- TypeScript ESLint 6.15.0 - TypeScript规则
 
-### Scripts (from package.json)
-- `pnpm dev`: Start development server on port 3000
-- `pnpm build`: Build production bundle with TypeScript compilation
-- `pnpm preview`: Preview production build locally
-- `pnpm lint`: Run ESLint with TypeScript support
-- `pnpm format`: Format code with Prettier
-- `pnpm type-check`: TypeScript type checking without emitting
-- `pnpm test`: Run Vitest unit tests
-- `pnpm test:ui`: Run Vitest with UI interface
-- `pnpm test:coverage`: Run tests with coverage reporting
-- `pnpm test:e2e`: Run Playwright end-to-end tests
+**构建配置:**
+- Vite配置：`/Users/sunshaocong/claude/startup/scame-selection-tool/vite.config.ts`
+- TypeScript配置：`/Users/sunshaocong/claude/startup/scame-selection-tool/tsconfig.json`
+- Tailwind配置：`/Users/sunshaocong/claude/startup/scame-selection-tool/tailwind.config.js`
+- PostCSS配置：`/Users/sunshaocong/claude/startup/scame-selection-tool/postcss.config.js`
 
-### Development Environment
-- **Port**: 3000 (configurable in vite.config.ts)
-- **Host**: true (accessible on network)
-- **Source Maps**: Enabled in production builds
-- **Path Aliases**: `@/` maps to `src/` directory
-- **Module Resolution**: Bundler mode with ESM
+## Key Dependencies
 
-## Build & Deployment
+**关键业务逻辑:**
+- 自定义SCAME编码解析库：`src/lib/scame/coding.ts`
+- 产品匹配算法：`src/lib/scame/matching.ts`
+- RAG系统：`src/lib/rag/` 目录
 
-### Build Output
-- **Output Directory**: `dist/`
-- **Module Format**: ES modules (ESM)
-- **Target Environment**: Modern browsers with ES2022 support
+**HTTP客户端:**
+- Axios 1.6.7 - HTTP请求库（已安装但当前未使用）
 
-### Performance Optimizations
-- **Code Splitting**: Automatic by Vite
-- **Tree Shaking**: Enabled through ES modules
-- **Minification**: Production builds are minified
-- **Source Maps**: Generated for debugging
+**UI组件:**
+- Headless UI (计划中，当前使用自定义组件)
 
-## Testing Strategy
+## Configuration
 
-### Unit Testing
-- **Framework**: Vitest with jsdom environment
-- **Setup**: Global test configuration in `src/test/setup.ts`
-- **Coverage**: V8 coverage provider with multiple reporters
-- **Matchers**: Jest-compatible assertions with React Testing Library
+**环境配置:**
+- 当前无 `.env` 文件
+- 配置通过硬编码或未来环境变量管理
+- 需要配置的变量：RAG向量数据库连接、API端点等
 
-### Integration Testing
-- **Component Testing**: React Testing Library for component integration
-- **User Interaction**: @testing-library/user-event for realistic interactions
+**构建配置:**
+- Vite开发服务器：端口3000，host: true
+- 路径别名：`@/*` → `src/*`
+- 严格TypeScript模式启用
+- 测试覆盖率报告：v8提供器
 
-### End-to-End Testing
-- **Framework**: Playwright for cross-browser testing
-- **Browser Support**: Chromium, Firefox, WebKit
-- **Test Location**: Separate e2e test directory
+**代码检查配置:**
+- ESLint配置：`/Users/sunshaocong/claude/startup/scame-selection-tool/.eslintrc.cjs`
+- Prettier配置：`/Users/sunshaocong/claude/startup/scame-selection-tool/.prettierrc.json`
+- 规则：单引号、尾随逗号、100字符行宽、2空格缩进
 
-## Code Quality Standards
+## Platform Requirements
 
-### TypeScript Configuration
-- **Strict Mode**: Enabled with all strict checks
-- **Unused Variables**: Error on unused locals and parameters
-- **Fallthrough Cases**: Error on switch statement fallthrough
-- **Module Resolution**: Bundler mode for modern tooling
+**开发环境:**
+- Node.js 18+
+- pnpm 8+ (推荐) 或 npm
+- 现代浏览器（Chrome 90+, Firefox 88+, Safari 14+）
 
-### Linting Rules
-- **React Hooks**: Enforce rules of hooks
-- **React Refresh**: Only export components from files using refresh
-- **Unused Variables**: Error with ignore patterns for `_` prefix
-- **TypeScript**: Recommended rules with strict type checking
+**生产环境:**
+- 静态文件托管（Vercel、Netlify、GitHub Pages等）
+- 需要后端API服务（计划中）
+- 向量数据库服务（ChromaDB、Pinecone等）
 
-### Formatting Standards
-- **Prettier**: Consistent code formatting across team
-- **Integration**: Works with ESLint without conflicts
+**浏览器支持:**
+- ES2022+ 特性
+- 模块化JavaScript
+- CSS Grid/Flexbox
+- 现代Web API
 
-## Browser Support
+---
 
-### Target Environments
-- **Modern Browsers**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
-- **ES2022 Features**: Native support expected
-- **Polyfills**: Minimal, focused on modern browser support
-
-### Responsive Design
-- **Mobile-First**: Tailwind CSS mobile-first approach
-- **Responsive Utilities**: Tailwind responsive breakpoints
-- **Touch Support**: Optimized for touch interactions
-
-## Performance Characteristics
-
-### Bundle Size Optimization
-- **Tree Shaking**: Unused code elimination
-- **Code Splitting**: Dynamic imports for route-based splitting
-- **Asset Optimization**: Image and font optimization through Vite
-
-### Runtime Performance
-- **Virtual DOM**: React's efficient update mechanism
-- **State Management**: Zustand's minimal re-renders
-- **Data Fetching**: React Query's caching and background updates
-
-## Development Dependencies Summary
-
-### Core Development Tools
-- Vite, TypeScript, ESLint, Prettier, Vitest
-
-### Testing Ecosystem
-- Vitest, React Testing Library, Playwright, jsdom
-
-### Build & Transformation
-- PostCSS, Autoprefixer, @vitejs/plugin-react
-
-### Type Safety
-- TypeScript compiler and type definitions for all major dependencies
-
-## Notes & Considerations
-
-### Technology Choices Rationale
-1. **Vite over Webpack**: Faster builds and better developer experience
-2. **Zustand over Redux**: Simpler API with comparable capabilities
-3. **React Query**: Built-in caching, background updates, and error handling
-4. **Tailwind CSS**: Rapid UI development with design system consistency
-5. **TypeScript**: Type safety for complex business logic and SCAME encoding rules
-
-### Future Considerations
-- **Server-Side Rendering**: Potential migration to Next.js for SEO and performance
-- **Backend Integration**: API services for product data and RAG system
-- **Mobile Applications**: React Native for native mobile experience
-- **Desktop Applications**: Electron for offline desktop tool
+*Stack analysis: 2026-04-16*

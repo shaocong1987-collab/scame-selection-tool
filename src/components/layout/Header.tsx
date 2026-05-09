@@ -1,60 +1,78 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, Search, Bell, User } from 'lucide-react';
+import { Link, NavLink } from 'react-router-dom';
+import { Search, Sparkles } from 'lucide-react';
+
+const navigation = [
+  { name: '首页', href: '/' },
+  { name: '快速选型', href: '/quick-select' },
+  { name: '正向查询', href: '/forward-selection' },
+  { name: '反向选型', href: '/reverse-selection' },
+  { name: '产品库', href: '/products' },
+  { name: '知识库', href: '/knowledge' },
+];
 
 const Header: React.FC = () => {
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200">
-      <div className="px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <button className="p-2 rounded-md hover:bg-gray-100 lg:hidden">
-              <Menu className="h-5 w-5 text-gray-600" />
-            </button>
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="h-8 w-8 bg-scame-blue rounded-md flex items-center justify-center">
-                <span className="text-white font-bold text-sm">S</span>
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">SCAME选型工具</h1>
-                <p className="text-xs text-gray-500">智能工业电气选型系统</p>
-              </div>
+    <header className="sticky top-0 z-40 border-b border-black/5 bg-white/78 backdrop-blur-2xl">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between gap-5">
+          <Link to="/" className="group flex min-w-0 items-center gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#111111] text-sm font-semibold text-white shadow-sm transition group-hover:scale-105">
+              S
+            </div>
+            <div className="min-w-0">
+              <div className="truncate text-sm font-semibold tracking-tight text-[#111111]">SCAME Selector</div>
+              <div className="hidden text-xs text-[#86868b] sm:block">Industrial Intelligence</div>
+            </div>
+          </Link>
+
+          <nav className="hidden items-center gap-1 lg:flex">
+            {navigation.map((item) => (
+              <NavLink
+                key={item.name}
+                to={item.href}
+                className={({ isActive }) =>
+                  `rounded-full px-3.5 py-2 text-sm font-medium transition ${
+                    isActive
+                      ? 'bg-[#111111] text-white'
+                      : 'text-[#424245] hover:bg-black/[0.04] hover:text-[#111111]'
+                  }`
+                }
+              >
+                {item.name}
+              </NavLink>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <div className="hidden items-center gap-2 rounded-full border border-black/10 bg-[#f5f5f7] px-3 py-2 text-sm text-[#86868b] md:flex">
+              <Search className="h-4 w-4" />
+              <span>型号 / 参数 / 场景</span>
+            </div>
+            <Link
+              to="/reverse-selection"
+              className="inline-flex items-center rounded-full bg-[#0066cc] px-4 py-2 text-sm font-semibold text-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:bg-[#004a99] hover:shadow-lg"
+            >
+              <Sparkles className="mr-2 h-4 w-4" />
+              开始选型
             </Link>
           </div>
-
-          <div className="flex-1 max-w-2xl mx-4 hidden lg:block">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <input
-                type="search"
-                placeholder="搜索产品型号、技术参数或应用场景..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-scame-blue focus:border-transparent"
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <button className="p-2 rounded-md hover:bg-gray-100 relative">
-              <Bell className="h-5 w-5 text-gray-600" />
-              <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
-            </button>
-            <div className="hidden md:flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer">
-              <User className="h-5 w-5 text-gray-600" />
-              <span className="text-sm font-medium text-gray-700">工程师</span>
-            </div>
-          </div>
         </div>
-
-        <div className="mt-4 lg:hidden">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-            <input
-              type="search"
-              placeholder="搜索产品型号、技术参数或应用场景..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-scame-blue focus:border-transparent"
-            />
-          </div>
-        </div>
+        <nav className="flex gap-2 overflow-x-auto pb-3 lg:hidden">
+          {navigation.slice(0, 5).map((item) => (
+            <NavLink
+              key={item.name}
+              to={item.href}
+              className={({ isActive }) =>
+                `shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition ${
+                  isActive ? 'bg-[#111111] text-white' : 'bg-[#f5f5f7] text-[#424245]'
+                }`
+              }
+            >
+              {item.name}
+            </NavLink>
+          ))}
+        </nav>
       </div>
     </header>
   );

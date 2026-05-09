@@ -1,24 +1,32 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
-import Sidebar from './Sidebar';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header />
-      <div className="flex flex-1">
-        <Sidebar />
-        <main className="flex-1 p-6 overflow-auto">
-          <div className="max-w-7xl mx-auto">
-            {children}
-          </div>
-        </main>
+  const location = useLocation();
+  const isLoginPage = location.pathname === '/login';
+
+  if (isLoginPage) {
+    return (
+      <div className="min-h-screen bg-industrial-gradient">
+        {children}
       </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col bg-[#f5f5f7] text-[#111111]">
+      <Header />
+      <main className="flex-1 px-4 pb-16 pt-8 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-7xl">
+          {children}
+        </div>
+      </main>
       <Footer />
     </div>
   );

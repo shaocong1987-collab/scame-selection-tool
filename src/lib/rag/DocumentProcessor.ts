@@ -508,14 +508,14 @@ export class ScameDocumentProcessor {
     }
   }
 
-  private async extractPdfMetadata(metadata: DocumentMetadata, content: Buffer): Promise<void> {
+  private async extractPdfMetadata(metadata: DocumentMetadata, _content: Buffer): Promise<void> {
     // 实际实现中会使用pdf-lib或类似的库
     // 这里设置模拟值
     metadata.pageCount = 10;
     metadata.author = 'SCAME Technical Department';
   }
 
-  private async extractDocxMetadata(metadata: DocumentMetadata, content: Buffer): Promise<void> {
+  private async extractDocxMetadata(metadata: DocumentMetadata, _content: Buffer): Promise<void> {
     // 实际实现中会使用mammoth或类似的库
     metadata.author = 'SCAME Technical Department';
   }
@@ -543,7 +543,7 @@ export class ScameDocumentProcessor {
     return undefined;
   }
 
-  private extractSection(text: string, position: number, metadata: DocumentMetadata): string | undefined {
+  private extractSection(text: string, position: number, _metadata: DocumentMetadata): string | undefined {
     // 查找当前位置附近的章节标题
     const searchStart = Math.max(0, position - 500);
     const searchEnd = Math.min(text.length, position + 500);
@@ -565,22 +565,22 @@ export class ScameDocumentProcessor {
   // 文件类型特定的提取方法（模拟实现）
   // ============================================================================
 
-  private async extractTextFromPdf(content: Buffer): Promise<string> {
+  private async extractTextFromPdf(_content: Buffer): Promise<string> {
     // 实际实现中会使用pdf-parse或类似的库
     return 'PDF文档内容 - 需要安装pdf-parse库';
   }
 
-  private async extractTextFromDocx(content: Buffer): Promise<string> {
+  private async extractTextFromDocx(_content: Buffer): Promise<string> {
     // 实际实现中会使用mammoth或类似的库
     return 'DOCX文档内容 - 需要安装mammoth库';
   }
 
-  private async extractTextFromPptx(content: Buffer): Promise<string> {
+  private async extractTextFromPptx(_content: Buffer): Promise<string> {
     // 实际实现中会使用ppt-extractor或类似的库
     return 'PPTX文档内容 - 需要安装相应的库';
   }
 
-  private async extractTextFromXlsx(content: Buffer): Promise<string> {
+  private async extractTextFromXlsx(_content: Buffer): Promise<string> {
     // 实际实现中会使用xlsx或类似的库
     return 'XLSX文档内容 - 需要安装xlsx库';
   }

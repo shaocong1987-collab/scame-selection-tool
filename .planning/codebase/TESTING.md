@@ -1,150 +1,225 @@
-# SCAME Selection Tool - Testing Strategy and Practices
+# Testing Patterns
 
-## Overview
+**Analysis Date:** 2026-04-16
 
-This document defines the testing strategy, tools, and practices for the SCAME Selection Tool. Testing is critical to ensure technical accuracy, reliability, and user confidence in the selection recommendations.
+## Test Framework
 
-## Table of Contents
+**Runner:**
+- Vitest 1.1.0 - Fast Vite-native test runner
+- Config: `vite.config.ts` (test section)
 
-1. [Testing Philosophy](#testing-philosophy)
-2. [Testing Pyramid](#testing-pyramid)
-3. [Testing Tools](#testing-tools)
-4. [Unit Testing](#unit-testing)
-5. [Integration Testing](#integration-testing)
-6. [End-to-End Testing](#end-to-end-testing)
-7. [Test Organization](#test-organization)
-8. [Test Data Management](#test-data-management)
-9. [Test Coverage](#test-coverage)
-10. [CI/CD Integration](#cicd-integration)
-11. [SCAME-Specific Testing](#scame-specific-testing)
-12. [Performance Testing](#performance-testing)
-13. [Accessibility Testing](#accessibility-testing)
+**Assertion Library:**
+- Vitest built-in assertions (Chai-style)
+- Extended with `@testing-library/jest-dom` matchers
 
-## Testing Philosophy
-
-### Core Principles
-1. **Technical Accuracy First**: All SCAME product specifications must be tested against official documentation
-2. **No Technical Hallucinations**: Test that the system never invents or approximates technical parameters
-3. **Defense in Depth**: Multiple layers of testing to catch different types of issues
-4. **Fast Feedback**: Tests should run quickly to enable rapid development
-5. **Deterministic Tests**: Tests should be reliable and not flaky
-
-### Testing Goals
-- **Reliability**: Ensure the system produces correct technical recommendations
-- **Accuracy**: Verify all SCAME coding rules and technical specifications
-- **Usability**: Test user interactions and workflows
-- **Performance**: Ensure acceptable response times
-- **Security**: Validate input sanitization and data protection
-
-## Testing Pyramid
-
-```
-        /¯¯¯¯¯¯¯¯¯¯\
-       /  E2E Tests  \      ~10% of tests
-      /______________\
-     /                \
-    / Integration Tests \   ~20% of tests
-   /____________________\
-  /                      \
- /     Unit Tests         \  ~70% of tests
-/__________________________\
+**Run Commands:**
+```bash
+npm test              # Run all tests
+npm run test:ui       # Vitest UI mode
+npm run test:coverage # Run tests with coverage
+npm run test:e2e      # Run Playwright E2E tests
 ```
 
-### Test Distribution
-- **Unit Tests**: 70% - Test individual functions and components in isolation
-- **Integration Tests**: 20% - Test interactions between components
-- **E2E Tests**: 10% - Test complete user workflows
+## Test File Organization
 
-## Testing Tools
+**Location:**
+- Tests are co-located with source files (not yet implemented)
+- Planned structure: `__tests__` directories or `.test.ts` files alongside source
 
-### Test Framework Stack
-```json
-{
-  "unit": {
-    "framework": "Vitest",
-    "assertion": "Vitest assertions",
-    "mocking": "Vitest vi.mock()",
-    "coverage": "V8 coverage provider"
-  },
-  "component": {
-    "framework": "React Testing Library",
-    "render": "@testing-library/react",
-    "user events": "@testing-library/user-event",
-    "matchers": "@testing-library/jest-dom"
-  },
-  "e2e": {
-    "framework": "Playwright",
-    "browsers": "Chromium, Firefox, WebKit",
-    "reporting": "Playwright HTML reporter"
-  }
-}
+**Naming:**
+- `[filename].test.ts` for unit tests
+- `[filename].test.tsx` for React component tests
+- `[filename].spec.ts` for E2E tests
+
+**Structure:**
+```
+tests/                    # Currently empty directory
+src/                     # Source code
+├── lib/
+│   ├── scame/
+│   │   ├── coding.ts    # Source
+│   │   └── coding.test.ts # Planned test location
+└── components/
+    └── layout/
+        ├── Header.tsx   # Source
+        └── Header.test.tsx # Planned test location
 ```
 
-### Configuration Files
-- **vite.config.ts**: Vitest configuration
-- **playwright.config.ts**: Playwright configuration
-- **src/test/setup.ts**: Test setup and global configurations
+## Test Structure
 
-## Unit Testing
-
-### Testing Business Logic
+**Suite Organization:**
 ```typescript
-// Example: Testing SCAME coding parser
-import { parsePartNumber, ScameCodingParser } from '@/lib/scame/coding';
-
+// Example from existing code comments in src/lib/scame/coding.ts
 describe('ScameCodingParser', () => {
-  describe('parsePartNumber', () => {
-    it('should parse valid OPTIMA part number', () => {
-      const result = parsePartNumber('513.63532T');
-      
-      expect(result.isValid).toBe(true);
-      expect(result.current).toBe('63A');
-      expect(result.poles).toBe('3P+E');
-      expect(result.protection).toBe('IP44/IP54');
-      expect(result.series).toBe('OPTIMA-TOP');
+  describe('parse', () => {
+    it('should parse valid part number', () => {
+      // Test implementation
     });
-
-    it('should reject invalid format', () => {
-      const result = parsePartNumber('invalid');
-      
-      expect(result.isValid).toBe(false);
-      expect(result.errors).toContain('订货号格式不正确');
-    });
-
-    it('should handle edge cases', () => {
-      // Test boundary conditions
-      const edgeCases = [
-        '213.16320',  // Minimum valid
-        '899.AL1AB123', // High current format
-        '513.63532T', // With variant
-      ];
-
-      edgeCases.forEach(partNumber => {
-        const result = parsePartNumber(partNumber);
-        expect(result.isValid).toBe(true);
-      });
+    
+    it('should handle invalid format', () => {
+      // Test implementation
     });
   });
-
+  
   describe('generateReplacements', () => {
     it('should generate correct replacement suggestions', () => {
-      const parser = new ScameCodingParser();
-      const replacements = parser.generateReplacements('213.32370');
-      
-      expect(replacements).toHaveLength(3);
-      expect(replacements[0].relationship).toBe('插头 → 移动连接器');
-      expect(replacements[0].confidence).toBeGreaterThan(0.7);
+      // Test implementation
     });
   });
 });
 ```
 
-### Testing React Components
+**Patterns:**
+- Use `describe` blocks to group related tests
+- Use `it` or `test` for individual test cases
+- Follow Arrange-Act-Assert pattern
+- Include clear test descriptions
+
+## Mocking
+
+**Framework:** Vitest vi.mock() API
+
+**Patterns:**
 ```typescript
-// Example: Testing ProductCard component
-import { render, screen, fireEvent } from '@testing-library/react';
+// Example mocking pattern (based on Vitest conventions)
+import { vi } from 'vitest';
+import { someModule } from './someModule';
+
+vi.mock('./someModule', () => ({
+  someFunction: vi.fn().mockReturnValue('mocked value'),
+}));
+
+describe('Component using mocked module', () => {
+  it('should use mocked function', () => {
+    // Test implementation
+  });
+});
+```
+
+**What to Mock:**
+- External API calls
+- File system operations
+- Browser APIs (localStorage, fetch, etc.)
+- Complex dependencies with side effects
+
+**What NOT to Mock:**
+- Pure utility functions
+- Simple data transformations
+- TypeScript interfaces and types
+- Constants and configuration
+
+## Fixtures and Factories
+
+**Test Data:**
+```typescript
+// Example from src/lib/scame/coding.ts comments
+const TEST_PART_NUMBERS = {
+  valid: [
+    '513.63532T',  // OPTIMA-TOP 63A 3P+E IP44
+    '213.32370',   // OPTIMA 32A 3P+E IP44
+    '899.AL1AB123', // High current product
+  ],
+  invalid: [
+    'invalid',
+    '123',         // Missing suffix
+    '123.456',     // Too short
+  ],
+  edgeCases: [
+    '213.16320',   // Minimum valid
+    '899.AS9ZZ999', // Maximum high current
+  ],
+} as const;
+```
+
+**Location:**
+- Planned: `tests/fixtures/` directory
+- Test data factories for generating mock objects
+- Reusable fixture objects for common test scenarios
+
+## Coverage
+
+**Requirements:** Not yet enforced (coverage configuration exists)
+
+**View Coverage:**
+```bash
+npm run test:coverage
+```
+
+**Coverage Configuration (from vite.config.ts):**
+```typescript
+test: {
+  coverage: {
+    provider: 'v8',
+    reporter: ['text', 'json', 'html'],
+    exclude: ['node_modules/', 'src/test/', '**/*.d.ts'],
+  },
+}
+```
+
+## Test Types
+
+**Unit Tests:**
+- Scope: Individual functions, classes, and components
+- Approach: Isolated testing with mocked dependencies
+- Location: Co-located with source files
+- Examples: `ScameCodingParser.parse()`, `extractCurrentCode()`
+
+**Integration Tests:**
+- Scope: Component interactions, API integrations
+- Approach: Test groups of components working together
+- Location: Separate integration test files
+- Examples: Product selection flow, form validation
+
+**E2E Tests:**
+- Framework: Playwright 1.40.1
+- Scope: Complete user workflows
+- Approach: Browser automation with real user interactions
+- Location: `tests/e2e/` directory (planned)
+- Examples: Complete selection workflow, error handling scenarios
+
+## Common Patterns
+
+**Async Testing:**
+```typescript
+// Pattern for async functions
+describe('Async operations', () => {
+  it('should handle async parsing', async () => {
+    const result = await asyncParseFunction(partNumber);
+    expect(result.isValid).toBe(true);
+  });
+  
+  it('should handle async errors', async () => {
+    await expect(asyncErrorFunction()).rejects.toThrow('Error message');
+  });
+});
+```
+
+**Error Testing:**
+```typescript
+// Pattern for error cases
+describe('Error handling', () => {
+  it('should return errors for invalid input', () => {
+    const result = parsePartNumber('invalid');
+    
+    expect(result.isValid).toBe(false);
+    expect(result.errors).toContain('订货号格式不正确');
+    expect(result.errors.length).toBeGreaterThan(0);
+  });
+  
+  it('should include warnings for non-fatal issues', () => {
+    const result = parsePartNumber('213.99999');
+    
+    expect(result.isValid).toBe(false);
+    expect(result.warnings).toContain('无法识别的产品系列前缀');
+  });
+});
+```
+
+**React Component Testing:**
+```typescript
+// Pattern for React components (planned)
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import ProductCard from '@/components/product/ProductCard';
 
 describe('ProductCard', () => {
   const mockProduct = {
@@ -153,25 +228,19 @@ describe('ProductCard', () => {
     current: '63A',
     poles: '3P+E',
     protection: 'IP44/IP54',
-    series: 'OPTIMA-TOP'
   };
-
-  const mockOnSelect = vi.fn();
-
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
+  
   it('should render product information', () => {
-    render(<ProductCard product={mockProduct} onSelect={mockOnSelect} />);
+    render(<ProductCard product={mockProduct} />);
     
     expect(screen.getByText('OPTIMA-TOP 63A 3P+E IP44')).toBeInTheDocument();
     expect(screen.getByText('63A')).toBeInTheDocument();
-    expect(screen.getByText('3P+E')).toBeInTheDocument();
   });
-
-  it('should call onSelect when clicked', async () => {
+  
+  it('should handle user interactions', async () => {
     const user = userEvent.setup();
+    const mockOnSelect = vi.fn();
+    
     render(<ProductCard product={mockProduct} onSelect={mockOnSelect} />);
     
     const selectButton = screen.getByRole('button', { name: /select/i });
@@ -179,484 +248,31 @@ describe('ProductCard', () => {
     
     expect(mockOnSelect).toHaveBeenCalledWith('513.63532T');
   });
-
-  it('should show selected state', () => {
-    render(
-      <ProductCard 
-        product={mockProduct} 
-        onSelect={mockOnSelect}
-        isSelected={true}
-      />
-    );
-    
-    expect(screen.getByTestId('product-card')).toHaveClass('selected');
-  });
 });
 ```
 
-### Testing Hooks
+## SCAME-Specific Testing Patterns
+
+**Technical Accuracy Tests:**
 ```typescript
-// Example: Testing custom hook
-import { renderHook, act } from '@testing-library/react';
-import { useProductSelection } from '@/hooks/useProductSelection';
-
-describe('useProductSelection', () => {
-  it('should initialize with empty selection', () => {
-    const { result } = renderHook(() => useProductSelection());
-    
-    expect(result.current.selectedProducts).toEqual([]);
-    expect(result.current.selectionCount).toBe(0);
-  });
-
-  it('should add product to selection', () => {
-    const { result } = renderHook(() => useProductSelection());
-    
-    act(() => {
-      result.current.selectProduct('513.63532T');
-    });
-    
-    expect(result.current.selectedProducts).toContain('513.63532T');
-    expect(result.current.selectionCount).toBe(1);
-  });
-
-  it('should not add duplicate products', () => {
-    const { result } = renderHook(() => useProductSelection());
-    
-    act(() => {
-      result.current.selectProduct('513.63532T');
-      result.current.selectProduct('513.63532T');
-    });
-    
-    expect(result.current.selectionCount).toBe(1);
-  });
-});
-```
-
-## Integration Testing
-
-### Component Integration Tests
-```typescript
-// Example: Testing product selection flow
-import { render, screen, waitFor } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import ProductSelectionPage from '@/pages/ProductSelectionPage';
-import { ProductProvider } from '@/contexts/ProductContext';
-
-describe('ProductSelectionPage', () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-  });
-
-  const renderWithProviders = (component: React.ReactNode) => {
-    return render(
-      <QueryClientProvider client={queryClient}>
-        <ProductProvider>
-          {component}
-        </ProductProvider>
-      </QueryClientProvider>
-    );
-  };
-
-  it('should load and display products', async () => {
-    renderWithProviders(<ProductSelectionPage />);
-    
-    // Show loading state
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
-    
-    // Wait for data to load
-    await waitFor(() => {
-      expect(screen.getByText('OPTIMA-TOP 63A 3P+E IP44')).toBeInTheDocument();
-    });
-  });
-
-  it('should filter products by current rating', async () => {
-    renderWithProviders(<ProductSelectionPage />);
-    
-    await waitFor(() => {
-      expect(screen.getByText('OPTIMA-TOP 63A 3P+E IP44')).toBeInTheDocument();
-    });
-    
-    // Select 32A filter
-    const filterButton = screen.getByRole('button', { name: '32A' });
-    fireEvent.click(filterButton);
-    
-    await waitFor(() => {
-      expect(screen.queryByText('OPTIMA-TOP 63A 3P+E IP44')).not.toBeInTheDocument();
-      expect(screen.getByText('OPTIMA-TOP 32A 3P+E IP44')).toBeInTheDocument();
-    });
-  });
-});
-```
-
-### API Integration Tests
-```typescript
-// Example: Testing API integration
-import { http, HttpResponse } from 'msw';
-import { setupServer } from 'msw/node';
-import { renderHook, waitFor } from '@testing-library/react';
-import { useProductQuery } from '@/hooks/useProductQuery';
-
-const server = setupServer(
-  http.get('/api/products', () => {
-    return HttpResponse.json([
-      { id: '513.63532T', name: 'OPTIMA-TOP 63A 3P+E IP44' },
-      { id: '513.32370', name: 'OPTIMA-TOP 32A 3P+E IP44' },
-    ]);
-  })
-);
-
-describe('useProductQuery', () => {
-  beforeAll(() => server.listen());
-  afterEach(() => server.resetHandlers());
-  afterAll(() => server.close());
-
-  it('should fetch products from API', async () => {
-    const { result } = renderHook(() => useProductQuery());
-    
-    expect(result.current.isLoading).toBe(true);
-    
-    await waitFor(() => {
-      expect(result.current.isLoading).toBe(false);
-    });
-    
-    expect(result.current.data).toHaveLength(2);
-    expect(result.current.data[0].id).toBe('513.63532T');
-  });
-
-  it('should handle API errors', async () => {
-    server.use(
-      http.get('/api/products', () => {
-        return new HttpResponse(null, { status: 500 });
-      })
-    );
-    
-    const { result } = renderHook(() => useProductQuery());
-    
-    await waitFor(() => {
-      expect(result.current.isError).toBe(true);
-    });
-    
-    expect(result.current.error).toBeDefined();
-  });
-});
-```
-
-## End-to-End Testing
-
-### Playwright Test Structure
-```typescript
-// Example: E2E test for product selection workflow
-import { test, expect } from '@playwright/test';
-
-test.describe('Product Selection Workflow', () => {
-  test('should complete product selection', async ({ page }) => {
-    // Navigate to application
-    await page.goto('/');
-    
-    // Verify landing page
-    await expect(page).toHaveTitle(/SCAME选型工具/);
-    await expect(page.getByText('智能工业电气选型系统')).toBeVisible();
-    
-    // Navigate to forward selection
-    await page.getByRole('link', { name: '正向选型' }).click();
-    
-    // Fill selection parameters
-    await page.selectOption('select[name="current"]', '63A');
-    await page.selectOption('select[name="poles"]', '3P+E');
-    await page.selectOption('select[name="protection"]', 'IP44/IP54');
-    
-    // Submit selection
-    await page.getByRole('button', { name: '查找产品' }).click();
-    
-    // Verify results
-    await expect(page.getByText('找到 3 个匹配产品')).toBeVisible();
-    await expect(page.getByText('OPTIMA-TOP 63A 3P+E IP44')).toBeVisible();
-    
-    // Select a product
-    await page.getByRole('button', { name: '选择', exact: true }).first().click();
-    
-    // Verify selection confirmation
-    await expect(page.getByText('已选择 1 个产品')).toBeVisible();
-  });
-
-  test('should handle invalid parameters', async ({ page }) => {
-    await page.goto('/forward-selection');
-    
-    // Submit without required parameters
-    await page.getByRole('button', { name: '查找产品' }).click();
-    
-    // Verify validation errors
-    await expect(page.getByText('请选择电流规格')).toBeVisible();
-    await expect(page.getByText('请选择极数配置')).toBeVisible();
-  });
-});
-```
-
-### Cross-Browser Testing
-```typescript
-// Example: Cross-browser test configuration
-import { defineConfig, devices } from '@playwright/test';
-
-export default defineConfig({
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    },
-  ],
-});
-```
-
-## Test Organization
-
-### Directory Structure
-```
-tests/
-├── unit/                    # Unit tests
-│   ├── lib/               # Business logic tests
-│   │   ├── scame/        # SCAME coding tests
-│   │   │   ├── coding.test.ts
-│   │   │   ├── matching.test.ts
-│   │   │   └── validation.test.ts
-│   │   └── rag/          # RAG system tests
-│   │       ├── ScameRAGService.test.ts
-│   │       └── VectorStore.test.ts
-│   ├── components/        # Component unit tests
-│   │   ├── product/
-│   │   ├── selection/
-│   │   └── layout/
-│   ├── hooks/            # Custom hook tests
-│   └── utils/            # Utility function tests
-├── integration/           # Integration tests
-│   ├── components/       # Component integration
-│   ├── api/             # API integration
-│   └── workflows/       # User workflow tests
-├── e2e/                  # End-to-end tests
-│   ├── selection/       # Selection workflows
-│   ├── navigation/      # Navigation tests
-│   ├── error-handling/  # Error scenarios
-│   └── performance/     # Performance tests
-├── fixtures/             # Test data and fixtures
-│   ├── products/        # Product test data
-│   ├── documents/       # RAG document fixtures
-│   └── users/          # User test data
-└── mocks/               # Mock implementations
-    ├── api/            # API mocks
-    ├── services/       # Service mocks
-    └── browser/        # Browser API mocks
-```
-
-### Test File Naming
-- **Unit Tests**: `[filename].test.ts` or `[filename].test.tsx`
-- **Integration Tests**: `[filename].integration.test.ts`
-- **E2E Tests**: `[feature].spec.ts` in e2e directory
-- **Test Utilities**: `test-utils.ts` or `test-helpers.ts`
-
-## Test Data Management
-
-### Test Fixtures
-```typescript
-// Example: Product test fixtures
-export const PRODUCT_FIXTURES = {
-  validProducts: [
-    '513.63532T',  // OPTIMA-TOP 63A 3P+E IP44
-    '213.32370',   // OPTIMA 32A 3P+E IP44
-    '899.AL1AB123', // High current product
-  ],
-  
-  invalidProducts: [
-    'invalid',
-    '123',         // Missing suffix
-    '123.456',     // Too short
-    '123.456789',  // Too long
-  ],
-  
-  edgeCases: [
-    '213.16320',   // Minimum valid
-    '899.AS9ZZ999', // Maximum high current
-    '513.63532T',  // With variant
-  ],
-} as const;
-```
-
-### Mock Data Factories
-```typescript
-// Example: Factory for test data
-import { faker } from '@faker-js/faker';
-
-export function createMockProduct(overrides = {}) {
-  const baseProduct = {
-    id: `513.${faker.string.numeric(5)}T`,
-    name: `OPTIMA-TOP ${faker.helpers.arrayElement(['16A', '32A', '63A'])} 3P+E IP44`,
-    current: faker.helpers.arrayElement(['16A', '32A', '63A']),
-    poles: faker.helpers.arrayElement(['2P+E', '3P+E', '3P+N+E']),
-    protection: faker.helpers.arrayElement(['IP44', 'IP54', 'IP66']),
-    series: 'OPTIMA-TOP',
-    price: faker.commerce.price({ min: 100, max: 1000 }),
-    stock: faker.number.int({ min: 0, max: 100 }),
-  };
-  
-  return { ...baseProduct, ...overrides };
-}
-```
-
-### Test Data Isolation
-- Each test should be independent
-- Reset state between tests
-- Use beforeEach/afterEach for cleanup
-- Mock external dependencies
-
-## Test Coverage
-
-### Coverage Requirements
-```typescript
-// Minimum coverage thresholds
-const COVERAGE_THRESHOLDS = {
-  statements: 80,
-  branches: 75,
-  functions: 85,
-  lines: 80,
-};
-```
-
-### Coverage Configuration
-```typescript
-// vite.config.ts
-export default defineConfig({
-  test: {
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html'],
-      exclude: [
-        'node_modules/',
-        'src/test/',
-        '**/*.d.ts',
-        '**/*.config.*',
-        '**/index.ts', // Barrel files
-      ],
-      thresholds: {
-        statements: 80,
-        branches: 75,
-        functions: 85,
-        lines: 80,
-      },
-    },
-  },
-});
-```
-
-### Coverage Reports
-- **Text**: Console output for quick feedback
-- **JSON**: For CI/CD integration
-- **HTML**: Detailed browser-based report
-- **LCOV**: For code coverage badges
-
-## CI/CD Integration
-
-### GitHub Actions Workflow
-```yaml
-# .github/workflows/test.yml
-name: Test
-
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Lint
-      run: npm run lint
-    
-    - name: Type check
-      run: npm run type-check
-    
-    - name: Unit tests
-      run: npm run test:coverage
-    
-    - name: Upload coverage
-      uses: codecov/codecov-action@v3
-    
-    - name: Install Playwright browsers
-      run: npx playwright install --with-deps
-    
-    - name: E2E tests
-      run: npm run test:e2e
-    
-    - name: Upload Playwright report
-      uses: actions/upload-artifact@v3
-      if: always()
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
-```
-
-### Quality Gates
-- **Linting**: Must pass with no errors
-- **Type Checking**: Must pass with no errors
-- **Unit Tests**: Must pass with required coverage
-- **E2E Tests**: Must pass critical path tests
-- **Build**: Must succeed without errors
-
-## SCAME-Specific Testing
-
-### Technical Accuracy Tests
-```typescript
+// Must verify against official SCAME documentation
 describe('SCAME Technical Accuracy', () => {
-  // Test against official SCAME documentation
-  const OFFICIAL_SPECIFICATIONS = [
+  const OFFICIAL_TEST_CASES = [
     {
       partNumber: '513.63532T',
       expected: {
         current: '63A',
         poles: '3P+E',
         protection: 'IP44/IP54',
-        voltage: '380-415V',
         series: 'OPTIMA-TOP',
       },
-      source: 'SCAME官方手册第45页',
+      source: 'SCAME官方手册',
     },
-    // More official specifications...
+    // More official test cases...
   ];
-
-  OFFICIAL_SPECIFICATIONS.forEach(({ partNumber, expected, source }) => {
-    test(`should match official specification for ${partNumber} (${source})`, () => {
+  
+  OFFICIAL_TEST_CASES.forEach(({ partNumber, expected, source }) => {
+    test(`matches ${source} for ${partNumber}`, () => {
       const result = parsePartNumber(partNumber);
       
       expect(result.isValid).toBe(true);
@@ -669,61 +285,54 @@ describe('SCAME Technical Accuracy', () => {
 });
 ```
 
-### No-Hallucination Tests
+**No-Hallucination Tests:**
 ```typescript
+// Ensure system never invents technical parameters
 describe('No Technical Hallucinations', () => {
-  test('should never invent technical parameters', () => {
-    const invalidPartNumbers = [
+  test('rejects invalid part numbers with clear errors', () => {
+    const invalidCases = [
       '999.99999',  // Non-existent category
-      '513.99999',  // Non-existent current
-      '213.99999',  // Non-existent configuration
+      '513.99999',  // Non-existent configuration
+      '213.99999',  // Invalid format
     ];
     
-    invalidPartNumbers.forEach(partNumber => {
+    invalidCases.forEach(partNumber => {
       const result = parsePartNumber(partNumber);
       
-      // Should not create fake technical parameters
       expect(result.isValid).toBe(false);
       expect(result.errors.length).toBeGreaterThan(0);
-      
-      // Should not have guessed values
-      if (result.current) {
-        expect(CURRENT_BY_CODE).toHaveProperty(
-          Object.keys(CURRENT_BY_CODE).find(
-            key => CURRENT_BY_CODE[key] === result.current
-          )
-        );
-      }
+      // Should not guess or invent values
+      expect(result.current).not.toBe('16A'); // Default fallback
     });
   });
 });
 ```
 
-### Replacement Rule Tests
+**Replacement Rule Tests:**
 ```typescript
+// Test SCAME golden replacement rules
 describe('Golden Replacement Rules', () => {
-  const REPLACEMENT_TEST_CASES = [
+  const REPLACEMENT_CASES = [
     {
       original: '213.32370',
-      expectedReplacements: ['313.32370', '413.32370', '513.32370'],
+      expected: ['313.32370', '413.32370', '513.32370'],
       relationships: [
         '插头 → 移动连接器',
         '插头 → 暗装插座',
         '插头 → 明装插座',
       ],
     },
-    // More replacement test cases...
   ];
-
-  REPLACEMENT_TEST_CASES.forEach(({ original, expectedReplacements, relationships }) => {
-    test(`should generate correct replacements for ${original}`, () => {
+  
+  REPLACEMENT_CASES.forEach(({ original, expected, relationships }) => {
+    test(`generates correct replacements for ${original}`, () => {
       const parser = new ScameCodingParser();
       const replacements = parser.generateReplacements(original);
       
-      expect(replacements).toHaveLength(expectedReplacements.length);
+      expect(replacements).toHaveLength(expected.length);
       
       replacements.forEach((replacement, index) => {
-        expect(replacement.replacement).toBe(expectedReplacements[index]);
+        expect(replacement.replacement).toBe(expected[index]);
         expect(replacement.relationship).toBe(relationships[index]);
         expect(replacement.confidence).toBeGreaterThan(0.7);
       });
@@ -732,155 +341,70 @@ describe('Golden Replacement Rules', () => {
 });
 ```
 
-## Performance Testing
+## Test Setup and Configuration
 
-### Load Testing
+**Global Setup:**
 ```typescript
-// Example: Performance test for critical paths
-import { test, expect } from '@playwright/test';
+// Planned: src/test/setup.ts
+import '@testing-library/jest-dom';
+import { vi } from 'vitest';
 
-test.describe('Performance', () => {
-  test('should load selection page within 2 seconds', async ({ page }) => {
-    const startTime = Date.now();
-    
-    await page.goto('/forward-selection');
-    
-    await expect(page.getByText('正向选型')).toBeVisible();
-    
-    const loadTime = Date.now() - startTime;
-    expect(loadTime).toBeLessThan(2000); // 2 seconds
-    
-    console.log(`Page loaded in ${loadTime}ms`);
-  });
+// Global mocks
+vi.mock('@/lib/api', () => ({
+  fetchProducts: vi.fn(),
+}));
 
-  test('should search products within 1 second', async ({ page }) => {
-    await page.goto('/forward-selection');
-    
-    // Fill search criteria
-    await page.selectOption('select[name="current"]', '63A');
-    
-    const startTime = Date.now();
-    await page.getByRole('button', { name: '查找产品' }).click();
-    
-    await expect(page.getByText('找到产品')).toBeVisible();
-    
-    const searchTime = Date.now() - startTime;
-    expect(searchTime).toBeLessThan(1000); // 1 second
-    
-    console.log(`Product search completed in ${searchTime}ms`);
-  });
-});
+// Global test utilities
+global.testProduct = {
+  id: '513.63532T',
+  name: 'OPTIMA-TOP 63A 3P+E IP44',
+  // ... other properties
+};
 ```
 
-### Memory Leak Tests
-```typescript
-// Example: Memory leak detection
-describe('Memory Management', () => {
-  test('should not leak memory during product parsing', () => {
-    const parser = new ScameCodingParser();
-    const iterations = 1000;
-    
-    const initialMemory = process.memoryUsage().heapUsed;
-    
-    for (let i = 0; i < iterations; i++) {
-      parser.parse(`513.${String(i).padStart(5, '0')}`);
-    }
-    
-    const finalMemory = process.memoryUsage().heapUsed;
-    const memoryIncrease = finalMemory - initialMemory;
-    
-    // Allow some increase but not exponential
-    expect(memoryIncrease).toBeLessThan(10 * 1024 * 1024); // 10MB
-  });
-});
-```
+**Environment Configuration:**
+- Test environment: `jsdom` (configured in vite.config.ts)
+- Global flags: `globals: true` for Vitest
+- TypeScript support: `vitest/globals` types included
 
-## Accessibility Testing
+## Test Execution Strategy
 
-### Automated Accessibility Tests
-```typescript
-// Example: Accessibility testing with Playwright
-import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
+**Development Workflow:**
+1. Write test alongside implementation
+2. Run unit tests during development
+3. Run integration tests before commits
+4. Run E2E tests before merging
 
-test.describe('Accessibility', () => {
-  test('should have no accessibility violations', async ({ page }) => {
-    await page.goto('/');
-    
-    const accessibilityScanResults = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-      .analyze();
-    
-    expect(accessibilityScanResults.violations).toEqual([]);
-  });
+**CI/CD Integration:**
+- Linting and type checking first
+- Unit tests with coverage reporting
+- Integration tests
+- E2E tests on multiple browsers
+- Performance and accessibility tests
 
-  test('should be keyboard navigable', async ({ page }) => {
-    await page.goto('/');
-    
-    // Test tab navigation
-    await page.keyboard.press('Tab');
-    await expect(page.locator(':focus')).toHaveAttribute('href', '/');
-    
-    await page.keyboard.press('Tab');
-    await expect(page.locator(':focus')).toHaveText('正向选型');
-    
-    // Test enter key on links
-    await page.keyboard.press('Enter');
-    await expect(page).toHaveURL('/forward-selection');
-  });
-});
-```
+## Current Test Status
 
-### Screen Reader Compatibility
-```typescript
-test('should have proper ARIA labels', async ({ page }) => {
-  await page.goto('/forward-selection');
-  
-  // Check form controls
-  const currentSelect = page.getByLabel('电流规格');
-  await expect(currentSelect).toBeVisible();
-  await expect(currentSelect).toHaveAttribute('aria-required', 'true');
-  
-  // Check search button
-  const searchButton = page.getByRole('button', { name: '查找产品' });
-  await expect(searchButton).toBeVisible();
-  await expect(searchButton).toBeEnabled();
-});
-```
+**Implemented:**
+- Test configuration in `vite.config.ts`
+- Package dependencies for testing frameworks
+- TypeScript configuration for test globals
+- Basic test structure patterns in code comments
 
-## Test Maintenance
+**Pending Implementation:**
+- Actual test files (directory currently empty)
+- Test fixtures and factories
+- Coverage enforcement thresholds
+- CI/CD test pipeline
+- E2E test suite
 
-### Test Documentation
-- Document test purpose in describe/it blocks
-- Include references to requirements or user stories
-- Note any assumptions or preconditions
-- Document test data sources
-
-### Test Review Checklist
-- [ ] Tests are independent and isolated
-- [ ] Tests cover edge cases and error scenarios
-- [ ] Tests are not flaky or timing-dependent
-- [ ] Test data is appropriate and realistic
-- [ ] Tests follow naming conventions
-- [ ] Tests have clear assertions
-- [ ] Tests clean up after themselves
-- [ ] Tests are properly organized
-
-### Test Refactoring
-- Extract common test setup to helpers
-- Use factory functions for test data
-- Group related tests in describe blocks
-- Remove duplicate test logic
-- Update tests when requirements change
-
-## Conclusion
-
-This testing strategy ensures that the SCAME Selection Tool is reliable, accurate, and user-friendly. The multi-layered approach provides defense in depth, catching issues at different levels of the application.
-
-Remember: **Technical accuracy is non-negotiable**. All tests related to SCAME product specifications must be verified against official documentation.
+**Recommended Next Steps:**
+1. Create `src/test/setup.ts` for global test configuration
+2. Add unit tests for `src/lib/scame/coding.ts`
+3. Add component tests for key React components
+4. Set up test data fixtures
+5. Configure coverage thresholds
+6. Implement E2E tests with Playwright
 
 ---
 
-*Last Updated: 2026-04-15*  
-*Version: 1.0*  
-*Based on analysis of existing codebase and project requirements*
+*Testing analysis: 2026-04-16*

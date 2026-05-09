@@ -17,57 +17,58 @@ const ProductsPage: React.FC = () => {
 
   const series = ['全部', 'OPTIMA', 'OPTIMA-TOP', 'EUREKA-HD', 'XENIA', 'ADVANCE2', 'SAFE-IN'];
 
+
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">产品库</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-3xl font-bold text-[#111111]">产品库</h1>
+        <p className="text-[#6e6e73] mt-2">
           浏览所有SCAME工业电气产品
         </p>
       </div>
 
       {/* 筛选工具栏 */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-[28px] border border-black/10 p-6 shadow-industrial">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[#6e6e73]" />
               <input
                 type="search"
                 placeholder="搜索产品型号、名称或技术参数..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-scame-blue focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 bg-[#f5f5f7] border border-black/10 rounded-2xl text-[#111111] placeholder:text-[#86868b] focus:outline-none focus:ring-2 focus:ring-industrial-accent-electric focus:border-transparent transition-colors"
               />
             </div>
           </div>
 
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center space-x-2">
-              <Filter className="h-5 w-5 text-gray-500" />
-              <select className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-scame-blue">
-                <option>产品系列</option>
+              <Filter className="h-5 w-5 text-[#6e6e73]" />
+              <select className="bg-[#f5f5f7] border border-black/10 rounded-2xl px-3 py-2 text-[#111111] focus:outline-none focus:ring-2 focus:ring-industrial-accent-electric focus:border-transparent transition-colors">
+                <option className="bg-[#f5f5f7]">产品系列</option>
                 {series.map(s => (
-                  <option key={s} value={s}>{s}</option>
+                  <option key={s} value={s} className="bg-[#f5f5f7]">{s}</option>
                 ))}
               </select>
             </div>
 
             <div className="flex items-center space-x-2">
-              <select className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-scame-blue">
-                <option>电流规格</option>
-                <option>16A</option>
-                <option>32A</option>
-                <option>63A</option>
-                <option>125A</option>
-                <option>160A+</option>
+              <select className="bg-[#f5f5f7] border border-black/10 rounded-2xl px-3 py-2 text-[#111111] focus:outline-none focus:ring-2 focus:ring-industrial-accent-electric focus:border-transparent transition-colors">
+                <option className="bg-[#f5f5f7]">电流规格</option>
+                <option className="bg-[#f5f5f7]">16A</option>
+                <option className="bg-[#f5f5f7]">32A</option>
+                <option className="bg-[#f5f5f7]">63A</option>
+                <option className="bg-[#f5f5f7]">125A</option>
+                <option className="bg-[#f5f5f7]">160A+</option>
               </select>
             </div>
 
-            <div className="flex items-center space-x-2 border-l border-gray-300 pl-4">
-              <button className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50">
-                <Grid className="h-5 w-5 text-gray-600" />
+            <div className="flex items-center space-x-2 border-l border-black/10 pl-4">
+              <button className="p-2 rounded-2xl border border-black/10 hover:bg-[#f5f5f7] transition-colors">
+                <Grid className="h-5 w-5 text-[#6e6e73]" />
               </button>
-              <button className="p-2 rounded-lg border border-scame-blue bg-blue-50">
-                <List className="h-5 w-5 text-scame-blue" />
+              <button className="p-2 rounded-2xl border border-industrial-accent-electric bg-industrial-accent-electric/10">
+                <List className="h-5 w-5 text-industrial-accent-electric" />
               </button>
             </div>
           </div>
@@ -78,7 +79,7 @@ const ProductsPage: React.FC = () => {
           {['插头', '插座', '连接器', 'IP44', 'IP66', '16A', '32A', '63A'].map(tag => (
             <button
               key={tag}
-              className="px-3 py-1.5 text-sm border border-gray-300 rounded-full hover:border-scame-blue hover:text-scame-blue transition-colors"
+              className="px-3 py-1.5 text-sm border border-black/10 rounded-full text-[#6e6e73] hover:border-industrial-accent-electric hover:text-industrial-accent-electric transition-colors"
             >
               {tag}
             </button>
@@ -88,29 +89,29 @@ const ProductsPage: React.FC = () => {
 
       {/* 产品统计 */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-          <div className="text-2xl font-bold text-gray-900">4,585</div>
-          <div className="text-sm text-gray-600">产品总数</div>
+        <div className="bg-white p-4 rounded-[28px] border border-black/10">
+          <div className="text-2xl font-bold text-[#111111]">4,585</div>
+          <div className="text-sm text-[#6e6e73]">产品总数</div>
         </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-          <div className="text-2xl font-bold text-gray-900">12</div>
-          <div className="text-sm text-gray-600">产品系列</div>
+        <div className="bg-white p-4 rounded-[28px] border border-black/10">
+          <div className="text-2xl font-bold text-[#111111]">12</div>
+          <div className="text-sm text-[#6e6e73]">产品系列</div>
         </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-          <div className="text-2xl font-bold text-gray-900">8</div>
-          <div className="text-sm text-gray-600">电流规格</div>
+        <div className="bg-white p-4 rounded-[28px] border border-black/10">
+          <div className="text-2xl font-bold text-[#111111]">8</div>
+          <div className="text-sm text-[#6e6e73]">电流规格</div>
         </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-          <div className="text-2xl font-bold text-gray-900">5</div>
-          <div className="text-sm text-gray-600">防护等级</div>
+        <div className="bg-white p-4 rounded-[28px] border border-black/10">
+          <div className="text-2xl font-bold text-[#111111]">5</div>
+          <div className="text-sm text-[#6e6e73]">防护等级</div>
         </div>
       </div>
 
       {/* 产品列表 */}
       <div>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">产品列表</h2>
-          <div className="text-sm text-gray-500">
+          <h2 className="text-xl font-semibold text-[#111111]">产品列表</h2>
+          <div className="text-sm text-[#6e6e73]">
             显示 1-8 个产品，共 4,585 个
           </div>
         </div>
@@ -124,15 +125,15 @@ const ProductsPage: React.FC = () => {
         {/* 分页 */}
         <div className="mt-8 flex items-center justify-center">
           <nav className="flex items-center space-x-2">
-            <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+            <button className="px-3 py-2 border border-black/10 rounded-2xl text-[#6e6e73] hover:bg-[#f5f5f7] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
               上一页
             </button>
-            <button className="px-3 py-2 bg-scame-blue text-white rounded-lg">1</button>
-            <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">2</button>
-            <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">3</button>
-            <span className="px-2">...</span>
-            <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">48</button>
-            <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+            <button className="px-3 py-2 bg-industrial-accent-electric text-white rounded-2xl">1</button>
+            <button className="px-3 py-2 border border-black/10 rounded-2xl text-[#6e6e73] hover:bg-[#f5f5f7] transition-colors">2</button>
+            <button className="px-3 py-2 border border-black/10 rounded-2xl text-[#6e6e73] hover:bg-[#f5f5f7] transition-colors">3</button>
+            <span className="px-2 text-[#6e6e73]">...</span>
+            <button className="px-3 py-2 border border-black/10 rounded-2xl text-[#6e6e73] hover:bg-[#f5f5f7] transition-colors">48</button>
+            <button className="px-3 py-2 border border-black/10 rounded-2xl text-[#6e6e73] hover:bg-[#f5f5f7] transition-colors">
               下一页
             </button>
           </nav>

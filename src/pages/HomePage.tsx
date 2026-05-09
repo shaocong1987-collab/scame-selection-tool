@@ -1,205 +1,154 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Zap, Search, Layers, FileText, ArrowRight, CheckCircle } from 'lucide-react';
-import QuickSelectionCard from '../components/selection/QuickSelectionCard';
-import ProductCard from '../components/product/ProductCard';
+import {
+  ArrowRight,
+  Bot,
+  CheckCircle2,
+  Database,
+  FileSearch,
+  Layers3,
+  MessageSquare,
+  Search,
+  ShieldCheck,
+  Sparkles,
+} from 'lucide-react';
 
 const HomePage: React.FC = () => {
-  const features = [
+  const modules = [
     {
-      title: '正向选型',
-      description: '通过技术参数（电流、电压、极数等）查找匹配产品',
+      title: '正向查询',
+      description: '输入型号或确认参数后，从测试样本结构化数据输出结果。',
+      href: '/forward-selection',
       icon: Search,
-      color: 'bg-blue-100 text-blue-600',
-      href: '/forward-selection'
+    },
+    {
+      title: '产品详情',
+      description: '查看完整字段、产品图片、技术说明书、配套和衍生型号。',
+      href: '/products',
+      icon: FileSearch,
     },
     {
       title: '反向选型',
-      description: '通过产品型号查询完整技术参数和兼容产品',
-      icon: Layers,
-      color: 'bg-green-100 text-green-600',
-      href: '/reverse-selection'
+      description: '按产品形式、电流、极数、h、电压和 IP 逐层收敛。',
+      href: '/reverse-selection',
+      icon: Layers3,
     },
     {
-      title: '快速选型',
-      description: '根据常见应用场景一键获取推荐产品套装',
-      icon: Zap,
-      color: 'bg-purple-100 text-purple-600',
-      href: '/quick-select'
+      title: '测试数据',
+      description: '当前 MVP 只使用 47 个测试型号，不扩全量。',
+      href: '/knowledge',
+      icon: Database,
     },
-    {
-      title: '知识库',
-      description: '查阅SCAME官方技术手册、编码规则和应用案例',
-      icon: FileText,
-      color: 'bg-orange-100 text-orange-600',
-      href: '/knowledge'
-    }
-  ];
-
-  const popularProducts = [
-    { partNumber: '213.3237', name: '32A 3P+N+E IP44工业插头', series: 'OPTIMA' },
-    { partNumber: '513.63532T', name: '63A 2P+E IP44斜式明装插座', series: 'OPTIMA-TOP' },
-    { partNumber: '413.3267', name: '32A 3P+N+E IP44暗装插座', series: 'OPTIMA' },
-    { partNumber: '560.16832', name: '16A 2P+E IP44机械连锁插座', series: 'ADVANCE2' },
-  ];
-
-  const stats = [
-    { label: '产品数量', value: '4,585', description: 'SCAME全系列产品' },
-    { label: '电流范围', value: '16-800A', description: '覆盖标准到大电流' },
-    { label: '防护等级', value: 'IP44-IP69', description: '室内到恶劣环境' },
-    { label: '选型准确率', value: '99.9%', description: '基于官方规范' }
   ];
 
   return (
-    <div className="space-y-8">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-scame-blue to-blue-600 rounded-2xl p-8 text-white">
-        <div className="max-w-3xl">
-          <h1 className="text-4xl font-bold mb-4">
-            SCAME智能选型工具
+    <div className="space-y-14">
+      <section className="relative overflow-hidden rounded-[36px] bg-[#fbfbfd] px-6 py-16 shadow-industrial sm:px-10 lg:px-16 lg:py-24">
+        <div className="absolute left-1/2 top-10 h-80 w-80 -translate-x-1/2 rounded-full bg-blue-200/40 blur-3xl" />
+        <div className="absolute right-8 top-16 h-48 w-48 rounded-full bg-slate-200/70 blur-3xl" />
+
+        <div className="relative mx-auto max-w-5xl text-center">
+          <div className="mb-6 inline-flex items-center rounded-full border border-black/10 bg-white/80 px-4 py-2 text-sm font-medium text-[#6e6e73] shadow-sm">
+            <Sparkles className="mr-2 h-4 w-4 text-[#0066cc]" />
+            SCAME Selection Tool 1.0 MVP
+          </div>
+          <h1 className="font-display text-5xl font-semibold tracking-tight text-[#111111] sm:text-6xl lg:text-7xl">
+            让工业电气选型，
+            <span className="block text-[#0066cc]">清晰、可靠、可追溯。</span>
           </h1>
-          <p className="text-xl mb-6 opacity-90">
-            基于SCAME官方技术规范的工业电气产品智能选型系统。
-            支持正向/反向选型、智能匹配、RAG知识库增强。
+          <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-[#6e6e73] sm:text-xl">
+            面向内部测试的高准确度选型工作台。自然语言负责理解需求，最终型号由结构化数据和规则引擎决定。
           </p>
-          <div className="flex flex-wrap gap-4">
-            <Link
-              to="/quick-select"
-              className="inline-flex items-center px-6 py-3 bg-white text-scame-blue font-semibold rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              <Zap className="h-5 w-5 mr-2" />
-              开始快速选型
-              <ArrowRight className="h-5 w-5 ml-2" />
-            </Link>
+          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               to="/forward-selection"
-              className="inline-flex items-center px-6 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors"
+              className="inline-flex items-center rounded-full bg-[#0066cc] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-900/10 transition duration-300 hover:-translate-y-0.5 hover:bg-[#004a99]"
             >
-              详细参数选型
+              进入正向查询
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+            <Link
+              to="/reverse-selection"
+              className="inline-flex items-center rounded-full border border-black/10 bg-white px-6 py-3 text-sm font-semibold text-[#111111] transition duration-300 hover:-translate-y-0.5 hover:border-black/20 hover:shadow-lg"
+            >
+              查看报价复刻
             </Link>
           </div>
         </div>
-      </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {stats.map((stat) => (
-          <div key={stat.label} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-            <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
-            <div className="text-sm font-medium text-gray-700">{stat.label}</div>
-            <div className="text-xs text-gray-500 mt-1">{stat.description}</div>
+        <div className="relative mx-auto mt-14 grid max-w-5xl gap-4 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="rounded-[28px] border border-black/10 bg-white/88 p-6 shadow-industrial backdrop-blur">
+            <div className="flex items-center gap-3 text-sm font-semibold text-[#111111]">
+              <MessageSquare className="h-5 w-5 text-[#0066cc]" />
+              聊天入口 + 参数确认卡
+            </div>
+            <div className="mt-5 rounded-2xl bg-[#f5f5f7] p-4 text-sm leading-6 text-[#6e6e73]">
+              用户可以输入型号，例如 <span className="font-mono text-[#111111]">418.6367</span>；也可以描述
+              <span className="font-medium text-[#111111]"> 63A 3P+N+E 6h 346-415 IP66/IP67/IP69 暗装插座</span>。
+            </div>
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              {['产品形式', '电流 / 极数', '电压 / IP'].map((item) => (
+                <div key={item} className="rounded-2xl border border-black/5 bg-white px-4 py-3 text-sm font-semibold text-[#111111]">
+                  {item}
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
-      </div>
 
-      {/* Features */}
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">核心功能</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature) => {
-            const Icon = feature.icon;
+          <div className="rounded-[28px] border border-black/10 bg-white/88 p-6 shadow-industrial backdrop-blur">
+            <div className="flex items-center gap-3 text-sm font-semibold text-[#111111]">
+              <Bot className="h-5 w-5 text-[#0066cc]" />
+              输出原则
+            </div>
+            <div className="mt-6 space-y-4 text-sm leading-6 text-[#6e6e73]">
+              <div className="flex gap-3">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#0066cc]" />
+                LLM 只做理解、翻译、追问和解释。
+              </div>
+              <div className="flex gap-3">
+                <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#0066cc]" />
+                最终型号只由规则和结构化数据决定。
+              </div>
+              <div className="rounded-2xl border border-black/5 bg-[#f5f5f7] p-4">
+                <div className="text-3xl font-semibold tracking-tight text-[#111111]">47</div>
+                <div className="mt-1 text-[#6e6e73]">个测试型号已接入 MVP 数据源</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="mb-8 flex flex-col justify-between gap-3 md:flex-row md:items-end">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#86868b]">Workspace</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-[#111111]">清晰分层的选型模块</h2>
+          </div>
+          <p className="max-w-xl text-sm leading-6 text-[#6e6e73]">先跑通 MVP，再逐步扩展反向选型、库存平替、配套推荐和报价闭环。</p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {modules.map((module) => {
+            const Icon = module.icon;
             return (
               <Link
-                key={feature.title}
-                to={feature.href}
-                className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-scame-blue hover:shadow-md transition-all group"
+                key={module.title}
+                to={module.href}
+                className="group rounded-[28px] border border-black/5 bg-white p-6 shadow-industrial transition duration-300 hover:-translate-y-1 hover:border-black/10 hover:shadow-industrial-lg"
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div className={`p-3 rounded-lg ${feature.color}`}>
-                    <Icon className="h-6 w-6" />
+                <div className="mb-8 flex items-center justify-between">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#f5f5f7] text-[#0066cc]">
+                    <Icon className="h-5 w-5" />
                   </div>
-                  <ArrowRight className="h-5 w-5 text-gray-400 group-hover:text-scame-blue transition-colors" />
+                  <ArrowRight className="h-4 w-4 text-[#86868b] transition group-hover:translate-x-1 group-hover:text-[#0066cc]" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 text-sm">
-                  {feature.description}
-                </p>
+                <h3 className="text-lg font-semibold text-[#111111]">{module.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[#6e6e73]">{module.description}</p>
               </Link>
             );
           })}
         </div>
-      </div>
-
-      {/* Quick Selection */}
-      <div>
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">快速选型</h2>
-          <Link
-            to="/quick-select"
-            className="text-scame-blue hover:text-blue-700 font-medium flex items-center"
-          >
-            更多选项
-            <ArrowRight className="h-4 w-4 ml-1" />
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <QuickSelectionCard
-            title="数据中心"
-            description="服务器机柜供电，需要高可靠性和冗余设计"
-            current="32A"
-            poles="3P+N+E"
-            protection="IP44"
-            voltage="200-250V"
-          />
-          <QuickSelectionCard
-            title="港口码头"
-            description="户外重型设备供电，需要防水防腐蚀"
-            current="63A"
-            poles="3P+N+E"
-            protection="IP66/67"
-            voltage="380-415V"
-          />
-          <QuickSelectionCard
-            title="工业制造"
-            description="生产线设备供电，需要机械连锁保护"
-            current="16A"
-            poles="2P+E"
-            protection="IP44"
-            voltage="200-250V"
-          />
-        </div>
-      </div>
-
-      {/* Popular Products */}
-      <div>
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">热门产品</h2>
-          <Link
-            to="/products"
-            className="text-scame-blue hover:text-blue-700 font-medium flex items-center"
-          >
-            浏览所有产品
-            <ArrowRight className="h-4 w-4 ml-1" />
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {popularProducts.map((product) => (
-            <ProductCard key={product.partNumber} product={product} />
-          ))}
-        </div>
-      </div>
-
-      {/* Benefits */}
-      <div className="bg-gray-50 rounded-2xl p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">为什么选择SCAME选型工具</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[
-            '100%基于SCAME官方技术规范，杜绝参数幻觉',
-            '智能编码解析，支持黄金替换法则',
-            'RAG知识库增强，复杂查询提供技术依据',
-            '多平台集成，支持企微、飞书、钉钉机器人',
-            '严格验证IEC 60309标准兼容性',
-            '实时更新产品数据和价格信息'
-          ].map((benefit, index) => (
-            <div key={index} className="flex items-start space-x-3">
-              <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-700">{benefit}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      </section>
     </div>
   );
 };

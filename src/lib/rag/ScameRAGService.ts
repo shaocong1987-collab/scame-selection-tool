@@ -192,7 +192,9 @@ export const DEFAULT_RAG_CONFIG: RAGConfig = {
  */
 export class ScameRAGService {
   private config: RAGConfig;
+  // @ts-ignore - 将在后续实现中使用
   private vectorStore: any; // 实际应用中应该是向量数据库客户端
+  // @ts-ignore - 将在后续实现中使用
   private structuredStore: any; // 结构化数据存储
 
   constructor(config: Partial<RAGConfig> = {}) {
@@ -229,6 +231,7 @@ export class ScameRAGService {
     }
   ): Promise<RAGAnswer> {
     const startTime = Date.now();
+    console.log(`RAG查询开始: ${startTime}`);
 
     try {
       // 1. 检索相关文档
