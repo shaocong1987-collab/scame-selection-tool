@@ -147,3 +147,21 @@ Thumbs.db
 # Temporary files
 tmp/
 temp/
+
+# Project planning and internal documentation
+.planning/
+docs/
+tests/
+scripts/
+
+# Internal project documents
+CLAUDE.md
+PHASE_1A_SUMMARY.md
+UI_REDESIGN_PLAN.md
+project-vision.md
+
+# Docker and deployment files (may contain internal config)
+docker-compose.yml
+
+# Data processing directories (may contain sensitive business data)
+data/
